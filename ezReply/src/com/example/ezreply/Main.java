@@ -1,5 +1,8 @@
 package com.example.ezreply;
 
+import java.io.DataOutputStream;
+import java.net.Socket;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,7 +25,8 @@ public class Main extends Activity {
         
         LinearLayout lView = new LinearLayout(this);
         
-        String SMSs = getAllSMS();
+        //String SMSs = getAllSMS();
+        testSocket();
         
         message = new TextView(this);
         message.setText("hi");
@@ -63,4 +67,23 @@ public class Main extends Activity {
     	  return result;
     }
     
+    private Boolean testSocket(){
+    	new Thread(new Runnable()
+    	{
+    		public void run() {
+		    	try
+		    	{
+			    	Socket socket = new Socket("192.168.1.102",27015);
+			    	DataOutputStream DOS = new DataOutputStream(socket.getOutputStream());
+			    	DOS.writeUTF(" 漢語 HELLO WORLD");
+			    	socket.close();
+		    	}
+		    	catch (Exception e) {
+		    		System.out.println("system error: " + e);
+		    		}
+    		}
+    	}).start();
+    	return true;
+    }
 }
+
